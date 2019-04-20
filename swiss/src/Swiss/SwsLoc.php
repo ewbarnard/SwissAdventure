@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Swiss;
 
 /**
- * Class SwsLoc - Read a discription entry into Local Memory (210-297)
+ * Class SwsLoc - Read a description entry into Local Memory (210-297)
  *
  * @package App\Swiss
  */

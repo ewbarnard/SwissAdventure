@@ -14,4 +14,10 @@ class SwPercentMicrosTest extends TestCase {
         static::assertSame(6, count(SwissCom::SW__DIR0));
         static::assertSame(6, count(SwissCom::SW__MODEW));
     }
+
+    public function testCheckpointMicroSizes() {
+        static::assertSame(16, count(SwissCom::SW__ENGL));
+        static::assertSame(16, count(SwissCom::SW__ARAB));
+        static::assertSame(16, count(SwissCom::CKMIC));
+    }
 }

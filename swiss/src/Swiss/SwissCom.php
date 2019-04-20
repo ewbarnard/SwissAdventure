@@ -47,4 +47,15 @@ class SwissCom {
     public const SW__ENGL = [
         '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16',
     ];
+    public const SW__ARAB = [
+        'WAAHID', 'ITHNEYN', 'THALATHA', 'ARBAA', 'KHAMSA', 'SITTA',
+        'SABAA', 'THAMAANYA', 'TISAA', 'ASHARA', 'ITHDAASH', 'ITHNAASH',
+        'THALATHTAASH', 'ARBAATAASH', 'KHAMSTAASH', 'SITTAASH',
+    ];
+    public const CKMIC = [
+        'ZERMATT', 'JUNGFRA', 'SCHWYZ', 'NEUCHAT',
+        'MONTREU', 'WVIEW', 'PRISON', 'TRAP',
+        'MAZE03', 'MAZE04', 'MAZE15', 'MAZE16',
+        'VIEW', 'LEVEL2', 'EXITSTA', 'GLOWING',
+    ];
 }
