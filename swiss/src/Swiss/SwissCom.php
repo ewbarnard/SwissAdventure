@@ -38,4 +38,13 @@ class SwissCom {
     ];
 
     // 687 Location descriptor table entry (SW@)
+    // 706 SWISSTXS macro
+    // 742 SWISSETX macro
+    // 754 SWISSTXT macro
+
+    // 760 Checkpoint micros (SW$ENGL, SW$ARAB, CKMIC)
+
+    public const SW__ENGL = [
+        '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16',
+    ];
 }
