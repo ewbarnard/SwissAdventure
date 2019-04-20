@@ -18,4 +18,8 @@ class TravelModesTest extends TestCase {
         static::assertSame(7, SwissCom::SW_BACK);
         static::assertSame(7, SwissCom::SW_MAX);
     }
+
+/*    public function testInit() {
+        SwsDat::init();
+    }*/
 }

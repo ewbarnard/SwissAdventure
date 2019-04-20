@@ -22,6 +22,18 @@ class SwissCom {
     public const SW_BACK = self::SW_ASIDE + 1;  // Return to original IOP
     public const SW_MAX = self::SW_BACK;        // Number of codes
 
+    public const TRAVEL_MODE = [
+        'SW$UNDEF' => self::SW_UNDEF,
+        'SW$PASS' => self::SW_PASS,
+        'SW$SCORE' => self::SW_SCORE,
+        'SW$QUIT' => self::SW_QUIT,
+        'SW$WALK' => self::SW_WALK,
+        'SW$TRAIN' => self::SW_TRAIN,
+        'SW$ASIDE' => self::SW_ASIDE,
+        'SW$BACK' => self::SW_BACK,
+        'SW$MAX' => self::SW_MAX,
+    ];
+
     // 677 Micros for echo parameter lists (SW%xxxx)
 
     public const SW__DIREC = ['N', 'E', 'S', 'WEST', 'U', 'D'];
