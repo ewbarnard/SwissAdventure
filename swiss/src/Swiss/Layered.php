@@ -13,7 +13,7 @@ abstract class Layered {
 
     public static function getInstance() {
         $class = static::class;
-        if (!self::$instance[$class]) {
+        if (!(is_array(self::$instance) && array_key_exists($class, self::$instance))) {
             self::$instance[$class] = new static;
         }
         return self::$instance[$class];
@@ -24,4 +24,8 @@ abstract class Layered {
         self::$instance[$class] = $instance;
     }
 
+    public static function reset() {
+        $class = static::class;
+        unset(self::$instance[$class]);
+    }
 }
