@@ -24,10 +24,22 @@ class SwsWel {
     'Off you go now. . .';
 
     public static function run(): string {
-        $responseText = trim(strtoupper(Kernel::MSGR(self::MSG1)));
+        MachineState::setSection(MachineState::SECTION_WELCOME);
+        if (MachineState::getStatus() === MachineState::STATUS_RECEIVED_INPUT) {
+            return self::resume();
+        }
+
+        Kernel::MSGR(self::MSG1);
+        return self::MSG1;
+    }
+
+    public static function resume(): string {
+        $responseText = strtoupper(trim(MachineState::getUserInput()));
         if (strpos($responseText, 'Y') !== 0) {
             Kernel::MSG(self::MSG2);
         }
+        MachineState::setSection(MachineState::SECTION_NORMAL);
+        MachineState::setStatus(MachineState::STATUS_BEGIN);
         return $responseText;
     }
 }

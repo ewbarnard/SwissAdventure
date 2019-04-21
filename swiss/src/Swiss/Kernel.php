@@ -8,7 +8,7 @@ namespace App\Swiss;
  *
  * @package App\Swiss
  *
- * @method static \App\Swiss\Kernel getInstance()
+ * @method static Kernel getInstance()
  */
 class Kernel extends Layered {
 
@@ -16,14 +16,14 @@ class Kernel extends Layered {
      * Line 640 - Send message and accept response
      *
      * @param string $message
-     * @return string
      */
-    public static function MSGR(string $message): string {
-        return static::getInstance()->run_msgr($message);
+    public static function MSGR(string $message): void {
+         static::getInstance()->run_msgr($message);
     }
 
-    public function run_msgr(string $message): string {
-        return '';
+    public function run_msgr(string $message): void {
+        MachineState::addMessage($message);
+        MachineState::setStatus(MachineState::STATUS_NEED_INPUT);
     }
 
     /**
@@ -36,6 +36,7 @@ class Kernel extends Layered {
     }
 
     public function run_msg(string $message) {
+        MachineState::addMessage($message);
     }
 
 }
