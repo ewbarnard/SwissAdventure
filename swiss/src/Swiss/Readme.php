@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 
 namespace App\Swiss;
 
@@ -19,14 +19,59 @@ namespace App\Swiss;
  * Class SwissCom - Common deck - Definitions for Swiss Adventure overlays (651-774)
  * Class SwsDat - Swiss data (775-1494)
  *
- * To do:
- *  - SwsDat
- *    - test init
- *      - Top level counts 16, 16
- *      - Second level counts 2, 6
- *    - Fill in constants
- *    - Test for constant counts
- *    - Test for consistency with routes
+ * Development Order:
+ *   Swswel  (done)
+ *   Swsloc  (not needed)
+ *   Swsmov  (done)
+ *   Swsno   (done)
+ *   Swsnex  (done not tested)
+ *   Swcheck
+ *   Swshow
+ *   Swiss
+ *
+ * Calls
+ *
+ *   SWISS
+ *     CALL      SWSWEL
+ *     CALL      SWSHOW,(R!WHERE,RO=NEXT,RO=MODE)
+ *     CALL       SWSHOW,(R!WHERE,RO=NEXT,RO=MODE)
+ *
+ *   SWSHOW
+ *     CALL      SWSLOC,(BA,CL,RO=SW,RO=TX)
+ *     CALL      SWCHECK,(CL)
+ *     CALL      SWSNEX,(SW,CL,RO=NL1,RO=TV1)
+ *     CALL      SWSMOV,(R!TV1)
+ *
+ *   SWSLOC
+ *
+ *   SWSMOV
+ *     CALL      SWSLOC,(R!MOSOFF,TM,RO=LMDESC,RO=LMTXT)
+ *
+ *   SWSNEX
+ *     CALL      SWSNO
+ *
+ *   SWCHECK
+ *     CALL      SWSLOC,(BA,CK,RO=SW,RO=TX)
+ *
+ *   SWSNO
+ *     CALL      SWSLOC,(AB,AA,RO=LMDESC,RO=LMTXT)
+ *
+ *   SWSWEL
+ *
+ * Tree
+ *
+ *   Swiss
+ *     Swswel
+ *     Swshow
+ *       Swsloc
+ *       Swcheck
+ *         Swsloc
+ *       Swsnex
+ *         Swsno
+ *           Swsloc
+ *       Swsmov
+ *         Swsloc
+ *
  */
 class Readme {
 

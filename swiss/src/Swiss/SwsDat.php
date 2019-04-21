@@ -578,32 +578,14 @@ KERNEL   SWISSTXS  N=KERNEL,S=KERNEL,E=KERNEL,WEST=KERNEL,D=KERNEL,U=KERNEL';
     ];
 
     public const SW_SNIDE = [
-        'SNIDE1' => [
-            'You may not go that way.',
-        ],
-        'SNIDE2' => [
-            'Your attempt to enter forbidden territory is ' .
-            'quickly repulsed.',
-        ],
-        'SNIDE3' => [
-            'No way.',
-        ],
-        'SNIDE4' => [
-            'That is a restricted area.',
-        ],
-        'SNIDE5' => [
-            'Go somewhere else.',
-        ],
-        'SNIDE6' => [
-            'Such a move would put you in the TWILIGHT ZONE.',
-        ],
-        'SNIDE7' => [
-            'Foolish move.',
-        ],
-        'SNIDE8' => [
-            'You try and try, but cannot force your way through ' .
-            'the wall.',
-        ],
+        'SNIDE1' => 'You may not go that way.',
+        'SNIDE2' => 'Your attempt to enter forbidden territory is quickly repulsed.',
+        'SNIDE3' => 'No way.',
+        'SNIDE4' => 'That is a restricted area.',
+        'SNIDE5' => 'Go somewhere else.',
+        'SNIDE6' => 'Such a move would put you in the TWILIGHT ZONE.',
+        'SNIDE7' => 'Foolish move.',
+        'SNIDE8' => 'You try and try, but cannot force your way through the wall.',
     ];
 
     public static $sw_check = [];
