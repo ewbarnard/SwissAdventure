@@ -20,7 +20,7 @@ namespace App\Swiss;
  * Class SwsDat - Swiss data (775-1494)
  *
  * Development Order:
- *   Swswel  (x-done)
+ *   Swswel  (done)
  *   Swsloc  (not needed)
  *   Swsmov  (x-done)
  *   Swsno   (x-done)
