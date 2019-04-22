@@ -8,7 +8,6 @@ namespace App\Swiss;
  *     CALL      SWSNEX,(SW,CL,RO=NL1,RO=TV1)
  *
  * @package App\Swiss
- * @method static SwsNex getInstance()
  ************************************************************************
  *                                                                      *
  *  Name     - SWSNEX                                                   *
@@ -34,111 +33,166 @@ namespace App\Swiss;
  *                                                                      *
  ************************************************************************
  */
-class SwsNex extends Layered {
-    public const MAX_INVALID_RESPONSES = 6;
+class SwsNex {
     public const MESSAGE = 'Where to, boss?';
 
-    public $nextLocation = '';
-    public $responseDirection = '';
-
     /**
-     * @param string $location
-     * @return array ['location' => (string)key, 'mode' => (int)SW$xxxx]
+     * @return array
+     * @see SwsNexExamTest
      */
-    public static function run(string $location): array {
-        return static::getInstance()->run_swsnex($location);
-    }
-
-    public function run_swsnex(string $location): array {
-        $invalidResponses = 0;
-        $goodResponse = false;
-        $mode = SwissCom::SW_WALK;
-
-        while (!$goodResponse && ($invalidResponses++ < self::MAX_INVALID_RESPONSES)) {
-            $this->checkExam($location);
-            if ($this->responseDirection === 'Q') {
-                return ['location' => 'QUIT', 'mode' => SwissCom::SW_QUIT];
-            }
-            if ($this->isQuitRequest()) {
-                return $this->quitResponse();
-            }
-            $goodResponse = $this->goodResponse($location);
-
-            if ($goodResponse) {
-                $mode = $this->mode($location);
-                /**
-                 * Line 426
-                 * See if we require a certain score to proceed.
-                 */
-                if (($mode === SwissCom::SW_SCORE) && preg_match('/^TEST(\d\d)$/', $location, $matches)) {
-                    $station = $matches[1];
-                    $goodResponse = Score::haveScore($station);
-                } elseif ($mode === SwissCom::SW_PASS) {
-                    $goodResponse = Score::haveFullScore();
-                }
-            }
-
-            if (!$goodResponse) {
-                /**
-                 * Line 445
-                 * Not a valid response
-                 */
-                SwsNo::run();
-            }
+    public static function run(): array {
+        if (self::passedExam()) {
+            self::setExamPassed();
         }
-
-        return $goodResponse ? ['location' => $this->nextLocation, 'mode' => $mode] : $this->quitResponse();
-    }
-
-    public function checkExam(string $location) {
-        /**
-         * Line 390
-         * Trap passing the exam as a special case. If our adventurer
-         * made it all the way through and passed the exam, shunt him or
-         * her directly into the victory circle.
-         */
-        if (($location === SwsDat::SW_EXAM) && (Score::haveFullScore())) {
-            $this->responseDirection = 'W'; // Go west to victory
-        } else {
-            $responseText = trim(strtoupper(Kernel::MSGR(self::MESSAGE)));
-            if ($responseText === '') {
-                $responseText = 'X'; // Invalid direction
-            }
-            $this->responseDirection = substr($responseText, 0, 1);
+        if (MachineState::getStatus() === MachineState::STATUS_RECEIVED_INPUT) {
+            return self::resume();
         }
+        return self::prompt();
     }
 
     /**
-     * Line 404
-     * Trap a QUIT request
+     * Line 390
+     * Trap passing the exam as a special case. If our adventurer
+     * made it all the way through and passed the exam, shunt him or
+     * her directly into the victory circle.
+     *
+     * @return bool
+     * @see SwsNexExamTest
      */
-    public function isQuitRequest() {
-        return ($this->responseDirection === 'Q');
+    public static function passedExam(): bool {
+        return (MachineState::getLocation() === SwsDat::SW_EXAM) && Score::haveFullScore();
     }
 
-    public function quitResponse() {
+    /**
+     * Line 395 - Go west to victory
+     *
+     * @see SwsNexExamTest
+     */
+    public static function setExamPassed(): void {
+        MachineState::setUserInput('W');
+        MachineState::setStatus(MachineState::STATUS_RECEIVED_INPUT);
+    }
+
+    /**
+     * @return array
+     * @see SwsNexResumeTest
+     */
+    public static function resume(): array {
+        $direction = self::getDirection();
+        if (static::isQuit($direction)) {
+            return static::quitResponse();
+        }
+
+        $goodResponse = static::isGoodDirection($direction);
+        $location = MachineState::getLocation();
+        $travelMode = SwissCom::SW_WALK;
+        $nextLocation = $location;
+
+        if ($goodResponse) {
+            $nextLocation = SwsDat::$sw_begin_route[$location][static::reservedDirection($direction)];
+            $travelMode = self::travelMode($direction, $location);
+            $goodResponse = static::haveRequiredScore($travelMode, $location);
+        }
+
+        if (!$goodResponse) {
+            return self::prompt();
+        }
+        return ['location' => $nextLocation, 'mode' => $travelMode];
+    }
+
+    /**
+     * @return string
+     * @see SwsNexGoodDirectionTest
+     */
+    public static function getDirection(): string {
+        $responseText = strtoupper(trim(MachineState::getUserInput()));
+        if ($responseText === '') {
+            $responseText = 'X'; // Invalid direction
+        }
+        return substr($responseText, 0, 1);
+    }
+
+    /**
+     * @param string $direction
+     * @return bool
+     * @see SwsNexGoodDirectionTest
+     */
+    public static function isQuit(string $direction): bool {
+        return ($direction === 'Q');
+    }
+
+    /**
+     * @return array
+     * @see SwsNexGoodDirectionTest
+     */
+    public static function quitResponse(): array {
         return ['location' => 'QUIT', 'mode' => SwissCom::SW_QUIT];
     }
 
-    public function goodResponse(string $location): bool {
-        /**
-         * Line 415
-         * Now see if it's a good response
-         */
-        $key = $this->responseDirection;
-        if ($key === 'W') {
-            // 'W' is a reserved word in the assembler version, so using WEST instead
-            $key = 'WEST';
-        }
-        $goodResponse = array_key_exists($key, SwsDat::$sw_begin_route[$location]);
-        $this->nextLocation = $goodResponse ? SwsDat::$sw_begin_route[$location][$key] : '';
-        return $goodResponse;
+    /**
+     * Line 415
+     * Now see if it's a good response
+     *
+     * @param string $direction
+     * @return bool
+     * @see SwsNexGoodDirectionTest
+     */
+    public static function isGoodDirection(string $direction): bool {
+        return array_key_exists(static::reservedDirection($direction),
+            SwsDat::$sw_begin_route[MachineState::getLocation()]);
     }
 
-    public function mode(string $location): int {
-        $modeKey = $this->responseDirection . 'M';
-        $mode = array_key_exists($modeKey, SwsDat::$sw_begin_route[$location]) ?
-            SwsDat::$sw_begin_route[$location][$modeKey] : 'SW$WALK';
+    /**
+     * W is a reserved word in the assembler version - it's the modifier indicating a word address
+     * rather than a parcel address, so the routing map uses key WEST rather than key W
+     *
+     * @param string $direction
+     * @return string
+     * @see SwsNexReservedDirectionTest
+     */
+    public static function reservedDirection(string $direction): string {
+        return ($direction === 'W') ? 'WEST' : $direction;
+    }
+
+    /**
+     * @param string $direction
+     * @param string $location
+     * @return int
+     * @see SwsNexGoodDirectionTest
+     */
+    public static function travelMode(string $direction, string $location): int {
+        $mode = 'SW$WALK';
+        $modeKey = $direction . 'M';
+        if (array_key_exists($modeKey, SwsDat::$sw_begin_route[$location])) {
+            $mode = SwsDat::$sw_begin_route[$location][$modeKey];
+        }
         return SwissCom::TRAVEL_MODE[$mode];
+    }
+
+    /**
+     * Line 426
+     * See if we require a certain score to proceed
+     *
+     * @param int $travelMode
+     * @param string $location
+     * @return bool
+     * @see SwsNexHaveScoreTest
+     */
+    public static function haveRequiredScore(int $travelMode, string $location): bool {
+        if (($travelMode == SwissCom::SW_SCORE) && preg_match('/^TEST(\d\d)$/', $location, $matches)) {
+            return Score::haveScore($matches[1]);
+        } elseif ($travelMode === SwissCom::SW_PASS) {
+            return Score::haveFullScore();
+        }
+        return true;
+    }
+
+    /**
+     * @return array
+     * @see SwsNexPromptTest
+     */
+    public static function prompt(): array {
+        Kernel::MSGR(self::MESSAGE);
+        return [];
     }
 }

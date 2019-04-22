@@ -7,8 +7,6 @@ namespace App\Swiss;
  * Class Kernel - Emulate kernel functionality
  *
  * @package App\Swiss
- *
- * @method static Kernel getInstance()
  */
 class Kernel {
 

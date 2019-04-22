@@ -5,12 +5,12 @@ namespace App\Swiss;
 
 use PHPUnit\Framework\TestCase;
 
-class WelcomeTest extends TestCase {
-    public function setUp() {
+class SwsWelcomeTest extends TestCase {
+    public function setUp(): void {
         MachineState::reset();
     }
 
-    public function testBegin() {
+    public function testBegin(): void {
         $responseText = SwsWel::run();
 
         static::assertSame(SwsWel::MSG1, $responseText);
@@ -19,7 +19,7 @@ class WelcomeTest extends TestCase {
         static::assertSame([SwsWel::MSG1], MachineState::getMessages());
     }
 
-    public function testResumeNo() {
+    public function testResumeNo(): void {
         MachineState::setUserInput(' no ');
         MachineState::setStatus(MachineState::STATUS_RECEIVED_INPUT);
 
@@ -31,7 +31,7 @@ class WelcomeTest extends TestCase {
         static::assertSame([SwsWel::MSG2], MachineState::getMessages());
     }
 
-    public function testResumeYes() {
+    public function testResumeYes(): void {
         MachineState::setUserInput('y');
         MachineState::setStatus(MachineState::STATUS_RECEIVED_INPUT);
 

@@ -5,12 +5,12 @@ namespace App\Swiss;
 
 use PHPUnit\Framework\TestCase;
 
-class DisplayTextTest extends TestCase {
-    public function setUp() {
+class SwsMovDisplayTextTest extends TestCase {
+    public function setUp(): void {
         MachineState::reset();
     }
 
-    public function testRunMessage() {
+    public function testRunMessage(): void {
         $location = 'ZURICH';
         $expected = 'Zurich';
 

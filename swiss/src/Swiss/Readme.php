@@ -24,7 +24,7 @@ namespace App\Swiss;
  *   Swsloc  (not needed)
  *   Swsmov  (done)
  *   Swsno   (done)
- *   Swsnex  (needs to be redone)
+ *   Swsnex  (done)
  *   Swcheck
  *   Swshow
  *   Swiss

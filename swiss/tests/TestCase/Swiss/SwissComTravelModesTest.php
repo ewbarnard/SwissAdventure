@@ -5,9 +5,9 @@ namespace App\Swiss;
 
 use PHPUnit\Framework\TestCase;
 
-class TravelModesTest extends TestCase {
+class SwissComTravelModesTest extends TestCase {
 
-    public function testTravelConstants() {
+    public function testTravelConstants(): void {
         static::assertSame(0, SwissCom::SW_UNDEF);
         static::assertSame(1, SwissCom::SW_PASS);
         static::assertSame(2, SwissCom::SW_SCORE);
