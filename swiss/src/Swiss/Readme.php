@@ -22,9 +22,9 @@ namespace App\Swiss;
  * Development Order:
  *   Swswel  (done)
  *   Swsloc  (not needed)
- *   Swsmov  (x-done)
- *   Swsno   (x-done)
- *   Swsnex  (x-done not tested)
+ *   Swsmov  (done)
+ *   Swsno   (done)
+ *   Swsnex  (needs to be redone)
  *   Swcheck
  *   Swshow
  *   Swiss
