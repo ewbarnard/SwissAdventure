@@ -38,6 +38,7 @@ class MachineStateTest extends TestCase {
         $location = 'BOGUS';
         $status = 'Bogus';
         $machine = [
+            'exam' => '',
             'location' => $location,
             'messages' => ['Where to, boss?'],
             'section' => 'normal',

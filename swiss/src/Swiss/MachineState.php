@@ -15,10 +15,13 @@ class MachineState extends Layered {
     public const SECTION_WELCOME = 'welcome';
 
     public const STATUS_BEGIN = 'begin';
+    public const STATUS_FAIL = 'exam_failed';
     public const STATUS_NEED_INPUT = 'need_input';
+    public const STATUS_PASS = 'exam_passed';
     public const STATUS_RECEIVED_INPUT = 'received_input';
     public const STATUS_TRAVEL = 'normal_travel';
 
+    private const MACHINE_KEY_EXAM = 'exam';
     private const MACHINE_KEY_LOCATION = 'location';
     private const MACHINE_KEY_MESSAGES = 'messages';
     private const MACHINE_KEY_SECTION = 'section';
@@ -26,11 +29,28 @@ class MachineState extends Layered {
     private const MACHINE_KEY_STATIONS_REACHED = 'stationsReached';
     private const MACHINE_KEY_USER_INPUT = 'userInput';
 
+    private $exam = '';
     private $location = '';
     private $messages = [];
     private $section = '';
     private $status = '';
     private $userInput = '';
+
+    public static function setExam(string $exam): void {
+        static::getInstance()->runSetExam($exam);
+    }
+
+    private function runSetExam(string $exam): void {
+        $this->exam = $exam;
+    }
+
+    public static function getExam(): string {
+        return static::getInstance()->runGetExam();
+    }
+
+    private function runGetExam(): string {
+        return $this->exam;
+    }
 
     public static function setSection(string $section): void {
         static::getInstance()->runSetSection($section);
@@ -118,9 +138,10 @@ class MachineState extends Layered {
 
     private function runPauseMachine(): string {
         $machine = [
+            self::MACHINE_KEY_EXAM => $this->runGetExam(),
             self::MACHINE_KEY_LOCATION => $this->runGetLocation(),
             self::MACHINE_KEY_MESSAGES => $this->runGetMessages(),
-            self::MACHINE_KEY_SECTION=>$this->runGetSection(),
+            self::MACHINE_KEY_SECTION => $this->runGetSection(),
             self::MACHINE_KEY_STATIONS_REACHED => Score::getStationsReached(),
             self::MACHINE_KEY_STATUS => $this->runGetStatus(),
             self::MACHINE_KEY_USER_INPUT => $this->runGetUserInput(),
@@ -138,6 +159,9 @@ class MachineState extends Layered {
         /** @noinspection PhpComposerExtensionStubsInspection */
         $machine = json_decode($jsonMachine, true);
         if (is_array($machine)) {
+            if (array_key_exists(self::MACHINE_KEY_EXAM, $machine)) {
+                $this->runSetExam((string)$machine[self::MACHINE_KEY_EXAM]);
+            }
             if (array_key_exists(self::MACHINE_KEY_LOCATION, $machine)) {
                 $this->runSetLocation((string)$machine[self::MACHINE_KEY_LOCATION]);
             }
@@ -160,6 +184,7 @@ class MachineState extends Layered {
     }
 
     private function resetState(): void {
+        $this->exam = '';
         $this->location = '';
         $this->messages = [];
         $this->section = '';

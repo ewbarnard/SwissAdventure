@@ -7,7 +7,7 @@ namespace App\Swiss;
  * Class Readme
  *
  * @package App\Swiss
- *
+ *k
  * Class Swiss - Swiss adventure, root overlay (13-63)
  * Class SwShow - Display location text, get new location (64-209)
  * Class SwsLoc - Read a description entry into Local Memory (210-297)
@@ -25,8 +25,8 @@ namespace App\Swiss;
  *   Swsmov  (done)
  *   Swsno   (done)
  *   Swsnex  (done)
- *   Swcheck
- *   Swshow
+ *   Swcheck (done)
+ *   Swshow  (done)
  *   Swiss
  *
  * Calls

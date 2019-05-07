@@ -33,6 +33,15 @@ class SwissCom {
         'SW$BACK' => self::SW_BACK,
         'SW$MAX' => self::SW_MAX,
     ];
+    public const TRAVEL_KEY = [
+        self::SW_PASS => 'PASS',
+        self::SW_SCORE => 'SCORE',
+        self::SW_QUIT => 'QUIT',
+        self::SW_WALK => 'WALK',
+        self::SW_TRAIN => 'TRAIN',
+        self::SW_ASIDE => 'ASIDE',
+        self::SW_BACK => 'BACK',
+    ];
 
     // 677 Micros for echo parameter lists (SW%xxxx)
 

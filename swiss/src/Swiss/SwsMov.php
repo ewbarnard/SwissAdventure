@@ -26,12 +26,12 @@ namespace App\Swiss;
  ************************************************************************
  */
 class SwsMov {
-    public static function run(string $location): string {
-        SwsDat::init();
-        $title = SwsDat::$sw_begin[$location][0];
-        $description = SwsDat::$sw_begin[$location][1];
-        Kernel::MSG($title);
-        Kernel::MSG($description);
-        return $title;
+    public static function run(int $mode): void {
+        if (array_key_exists($mode, SwissCom::TRAVEL_KEY)) {
+            $travelKey = SwissCom::TRAVEL_KEY[$mode];
+            foreach (SwsDat::SW_TRAVL[$travelKey] as $message) {
+                Kernel::MSG($message);
+            }
+        }
     }
 }

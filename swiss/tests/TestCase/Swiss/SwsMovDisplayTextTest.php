@@ -10,17 +10,25 @@ class SwsMovDisplayTextTest extends TestCase {
         MachineState::reset();
     }
 
-    public function testRunMessage(): void {
-        $location = 'ZURICH';
-        $expected = 'Zurich';
+    public function dataMode(): array {
+        $data = [];
 
-        $responseText = SwsMov::run($location);
+        foreach (SwissCom::TRAVEL_KEY as $mode => $key) {
+            $messages = SwsDat::SW_TRAVL[$key];
+            $data[] = [$mode, $messages];
+        }
 
-        static::assertSame($expected, $responseText);
-        $messages = [
-            SwsDat::SW_BEGIN[$location][0],
-            SwsDat::SW_BEGIN[$location][1],
-        ];
+        return $data;
+    }
+
+    /**
+     * @param int $mode
+     * @param array $messages
+     * @dataProvider dataMode
+     */
+    public function testTrundleText(int $mode, array $messages): void {
+        SwsMov::run($mode);
+
         static::assertSame($messages, MachineState::getMessages());
     }
 }

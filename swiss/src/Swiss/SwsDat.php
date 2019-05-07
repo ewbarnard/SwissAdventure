@@ -466,7 +466,8 @@ class SwsDat {
             '(Exit in any direction)',
         ],
     ];
-    public const SW_EXAM = 'EXAM'; // SW@EXAM
+    public const SW_EXAM = 'EXAM'; // SW@EXAM (line 1246)
+    public const SW_FINAL = 'KERNEL'; // SW@FINAL (line 1355)
 
     public const SW_BEGIN_ROUTE = '
 EXTRA    SWISSTXS  N=LEVEL1,S=BERN,SM=SW$TRAIN,E=HEAP,WEST=LEVEL2,D=EXAM

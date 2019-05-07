@@ -20,6 +20,10 @@ class Score extends Layered {
         return $this->stationsReached;
     }
 
+    public static function clearScore(): void {
+        self::setStationsReached([]);
+    }
+
     public static function setStationsReached(array $stationsReached): void {
         static::getInstance()->runSetStationsReached($stationsReached);
     }
@@ -58,7 +62,16 @@ class Score extends Layered {
         if (!array_key_exists($location, $map)) {
             return;
         }
-        $stationKey = $this->stationKey($map[$location]);
+        $this->markStationReached($map[$location]);
+    }
+
+    private function markStationReached(string $station): void {
+        $stationKey = $this->stationKey($station);
         $this->stationsReached[$stationKey] = 1;
     }
+
+    public static function markExamQuestionPassed(string $station): void {
+        static::getInstance()->markStationReached($station);
+    }
+
 }
