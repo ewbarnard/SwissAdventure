@@ -165,9 +165,6 @@ class MachineState extends Layered {
             if (array_key_exists(self::MACHINE_KEY_LOCATION, $machine)) {
                 $this->runSetLocation((string)$machine[self::MACHINE_KEY_LOCATION]);
             }
-            if (array_key_exists(self::MACHINE_KEY_MESSAGES, $machine)) {
-                $this->messages = (array)$machine[self::MACHINE_KEY_MESSAGES];
-            }
             if (array_key_exists(self::MACHINE_KEY_SECTION, $machine)) {
                 $this->runSetSection((string)$machine[self::MACHINE_KEY_SECTION]);
             }

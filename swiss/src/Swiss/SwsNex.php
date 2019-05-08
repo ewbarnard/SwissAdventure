@@ -79,6 +79,7 @@ class SwsNex {
      */
     public static function resume(): array {
         $direction = self::getDirection();
+//        Swiss::trace("SwsNex::resume direction $direction");
         if (static::isQuit($direction)) {
             return static::quitResponse();
         }
@@ -106,6 +107,7 @@ class SwsNex {
      */
     public static function getDirection(): string {
         $responseText = strtoupper(trim(MachineState::getUserInput()));
+//        Swiss::trace("SwsNex::getDirection responseText $responseText");
         if ($responseText === '') {
             $responseText = 'X'; // Invalid direction
         }

@@ -17,7 +17,7 @@ class SwsDat {
         'ZURICH' => [
             'Zurich',
             'You are in Zurich, gazing across Zurichsee to the Swiss Alps. ' .
-            'Swissair flew you to Zurich a week ago. Your eyes drink their' .
+            'Swissair flew you to Zurich a week ago. Your eyes drink their ' .
             'fill, then you walk over to the Zurich Bahnhof and await your train. ' .
             'A gentle voice warns you:  Do not play SWISS on IOP-0.',
         ],
@@ -468,6 +468,16 @@ class SwsDat {
     ];
     public const SW_EXAM = 'EXAM'; // SW@EXAM (line 1246)
     public const SW_FINAL = 'KERNEL'; // SW@FINAL (line 1355)
+
+    // Line 45 - The starting location is based on which of the four possible
+    // operator consoles we are using; specifically, the I/O Processor number.
+    // Emulate that fact by making a random choice from the four locations.
+    public const ARRIVE = [
+        'ZURICH' => 0,
+        'PARIS' => 1,
+        'GENEVA' => 2,
+        'MILAN' => 3,
+    ];
 
     public const SW_BEGIN_ROUTE = '
 EXTRA    SWISSTXS  N=LEVEL1,S=BERN,SM=SW$TRAIN,E=HEAP,WEST=LEVEL2,D=EXAM

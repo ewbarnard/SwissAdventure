@@ -40,7 +40,7 @@ class MachineStateTest extends TestCase {
         $machine = [
             'exam' => '',
             'location' => $location,
-            'messages' => ['Where to, boss?'],
+            'messages' => [], // Messages do not get restored
             'section' => 'normal',
             'stationsReached' => $reached,
             'status' => $status,
