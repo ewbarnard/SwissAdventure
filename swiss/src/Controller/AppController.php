@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -16,6 +15,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Event\Event;
 
 /**
  * Application Controller
@@ -27,6 +27,7 @@ use Cake\Controller\Controller;
  */
 class AppController extends Controller
 {
+
     /**
      * Initialization hook method.
      *
@@ -36,11 +37,13 @@ class AppController extends Controller
      *
      * @return void
      */
-    public function initialize(): void
+    public function initialize()
     {
         parent::initialize();
 
-        $this->loadComponent('RequestHandler');
+        $this->loadComponent('RequestHandler', [
+            'enableBeforeRedirect' => false,
+        ]);
         $this->loadComponent('Flash');
 
         /*

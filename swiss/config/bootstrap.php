@@ -34,7 +34,7 @@ use Cake\Console\ConsoleErrorHandler;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Core\Plugin;
-use Cake\Database\TypeFactory;
+use Cake\Database\Type;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorHandler;
 use Cake\Http\ServerRequest;
@@ -183,13 +183,13 @@ ServerRequest::addDetector('tablet', function ($request) {
  * locale specific date formats. For details see
  * @link https://book.cakephp.org/3.0/en/core-libraries/internationalization-and-localization.html#parsing-localized-datetime-data
  */
-TypeFactory::build('time')
+Type::build('time')
     ->useImmutable();
-TypeFactory::build('date')
+Type::build('date')
     ->useImmutable();
-TypeFactory::build('datetime')
+Type::build('datetime')
     ->useImmutable();
-TypeFactory::build('timestamp')
+Type::build('timestamp')
     ->useImmutable();
 
 /*

@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -29,10 +28,11 @@ use Exception;
  */
 class Installer
 {
+
     /**
      * An array of directories to be made writable
      */
-    public const WRITABLE_DIRS = [
+    const WRITABLE_DIRS = [
         'logs',
         'tmp',
         'tmp/cache',
@@ -40,7 +40,7 @@ class Installer
         'tmp/cache/persistent',
         'tmp/cache/views',
         'tmp/sessions',
-        'tmp/tests',
+        'tmp/tests'
     ];
 
     /**
